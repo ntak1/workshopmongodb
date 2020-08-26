@@ -1,7 +1,9 @@
 package com.naomi.demo.services;
 
 import com.naomi.demo.domain.User;
+import com.naomi.demo.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import com.naomi.demo.repository.UserRepository;
 
@@ -15,5 +17,13 @@ public class UserService {
 
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    public User findById(String id) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            throw new ObjectNotFoundException("User not found.");
+        }
+        return user;
     }
 }
