@@ -14,6 +14,9 @@ public class UserDTO implements Serializable {
     public UserDTO() {
     }
 
+    public UserDTO(UserDTO userDTO) {
+    }
+
     public UserDTO(User user) {
        id = user.getId();
        name = user.getName();
