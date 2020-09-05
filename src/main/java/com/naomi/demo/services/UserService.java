@@ -5,10 +5,12 @@ import com.naomi.demo.dto.UserDTO;
 import com.naomi.demo.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import com.naomi.demo.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -39,5 +41,19 @@ public class UserService {
 
     public User fromDTO(UserDTO userDto) {
         return new User(userDto.getId(), userDto.getName(), userDto.getEmail());
+    }
+
+    public User update(User user) {
+        User newUser = userRepository.findById(user.getId()).orElse(null);
+        if (newUser == null) {
+            throw new ObjectNotFoundException("User not found.");
+        }
+        updateData(newUser, user);
+        return userRepository.save(newUser);
+    }
+
+    private void updateData(User newUser, User user) {
+        newUser.setEmail(user.getEmail());
+        newUser.setName(user.getName());
     }
 }
