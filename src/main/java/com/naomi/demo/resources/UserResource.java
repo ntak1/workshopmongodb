@@ -3,9 +3,7 @@ package com.naomi.demo.resources;
 import com.naomi.demo.domain.User;
 import com.naomi.demo.dto.UserDTO;
 import com.naomi.demo.services.UserService;
-import com.naomi.demo.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -32,6 +30,12 @@ public class UserResource {
     public ResponseEntity<UserDTO> findById(@PathVariable String id) {
         UserDTO userDTO = new UserDTO(userService.findById(id));
         return ResponseEntity.ok().body(userDTO);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(method = RequestMethod.POST)
